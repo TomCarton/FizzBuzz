@@ -7,11 +7,11 @@
 
 
 #if 'ABCD' == 0x41424344
-static const unsigned int kFizzFourCC = 'zziF';
-static const unsigned int kBuzzFourCC = 'zzuB';
+    static const unsigned int kFizzFourCC = 'zziF';
+    static const unsigned int kBuzzFourCC = 'zzuB';
 #else
-static const unsigned int kFizzFourCC = 'Fizz';
-static const unsigned int kBuzzFourCC = 'Buzz';
+    static const unsigned int kFizzFourCC = 'Fizz';
+    static const unsigned int kBuzzFourCC = 'Buzz';
 #endif
 
 char buffer[414];
@@ -66,8 +66,9 @@ void version_2()
 // version 3: first attempt with no branching
 void version_3()
 {
-    char zz[] = "FizzBuzz\0Fizz\0zzzzFizz\0zzzzFizz\0zzzzFizz\0zzzzBuzz\0zzzz\0zzzzzzzz\0zzzzzzzz"
-                "\0zzzzzzzz\0zzzzzzzzBuzz\0zzzz\0zzzzzzzz\0zzzzzzzz\0zzzzzzzz\0zzzzzzzz";
+    char zz[] = "FizzBuzz\0Fizz\0zzzzFizz\0zzzzFizz\0zzzzFizz\0zzzz"
+                "Buzz\0zzzz\0zzzzzzzz\0zzzzzzzz\0zzzzzzzz\0zzzzzzzz"
+                "Buzz\0zzzz\0zzzzzzzz\0zzzzzzzz\0zzzzzzzz\0zzzzzzzz";
                 
     for (unsigned int i = 1; i <= 100; ++i)
     {        
@@ -78,38 +79,38 @@ void version_3()
 // version 4: no branching at all ;)
 void version_4()
 {
-	char *p = buffer;
+    char *p = buffer;
 
-	unsigned int i = 0;
-	while (100 - i++)
-	{
-		unsigned int fizz = !(i % 3);
-		unsigned int buzz = !(i % 5);
+    unsigned int i = 0;
+    while (100 - i++)
+    {
+        unsigned int fizz = !(i % 3);
+        unsigned int buzz = !(i % 5);
 
-		unsigned int dec = i / 10;
-		p[0] = '0' + dec;
-		p[!!dec] = '0' + i % 10;
-		p += (!!dec + 1) * !(fizz | buzz);
+        unsigned int dec = i / 10;
+        p[0] = '0' + dec;
+        p[!!dec] = '0' + i % 10;
+        p += (!!dec + 1) * !(fizz | buzz);
 
-		*(unsigned int *)p = kFizzFourCC;
-		p += 4 * fizz;
-		
-		*(unsigned int *)p = kBuzzFourCC;
-		p += 4 * buzz;
+        *(unsigned int *)p = kFizzFourCC;
+        p += 4 * fizz;
+        
+        *(unsigned int *)p = kBuzzFourCC;
+        p += 4 * buzz;
 
-		*p++ = '\n';
-	}
+        *p++ = '\n';
+    }
 
-	*p = 0;
+    *p = 0;
 
-	printf("%s", buffer);
+    printf("%s", buffer);
 }
 
 int main(int argc, const char *argv[])
 {
     printf("\n\nVersion 1\n---------\n\n"); version_1();
     printf("\n\nVersion 2\n---------\n\n"); version_2();
-    printf("\n\nVersion 3\n---------\n\n"); version_3();    
+    printf("\n\nVersion 3\n---------\n\n"); version_3();
     printf("\n\nVersion 4\n---------\n\n"); version_4();
 
     return 0;
