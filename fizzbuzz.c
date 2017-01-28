@@ -70,20 +70,20 @@ void version_3()
 // version 4: no branching at all ;)
 void version_4()
 {
-	char *v = buffer;
+	char *p = buffer;
 
 	unsigned int i = 0;
 	while (++i <= 100)
 	{
-		*(char *)v++ = (i / 10) + '0';
-		*(char *)v++ = (i % 10) + '0';
+		*(char *)p++ = (i / 10) + '0';
+		*(char *)p++ = (i % 10) + '0';
 		
-		v -= 2 * (!(i % 3) | !(i % 5));
-		*(unsigned int *)v = 'zziF'; v += 4 * !(i % 3);
-		*(unsigned int *)v = 'zzuB'; v += 4 * !(i % 5);
+		p -= 2 * (!(i % 3) | !(i % 5));
+		*(unsigned int *)p = 'zziF'; p += 4 * !(i % 3);
+		*(unsigned int *)p = 'zzuB'; p += 4 * !(i % 5);
 
-		*v++ = '\n';
-		*v = 0;
+		*p++ = '\n';
+		*p = 0;
 	}
 
 	printf("%s", buffer);
