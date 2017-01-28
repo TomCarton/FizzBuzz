@@ -1,7 +1,13 @@
 // Fizzbuzz
 // 
+// written by Thomas CARTON
+//
 
 #include <stdio.h>
+
+
+char buffer[419];
+
 
 // version 1: using tests and a temporary flag
 void version_1()
@@ -61,18 +67,16 @@ void version_3()
     }
 }
 
-// version 4: no branching ;)
+// version 4: no branching at all ;)
 void version_4()
 {
-	char val[] = "xx\n\0";
+	char *v = buffer;
 
 	unsigned int i = 0;
-	while (++i < 100)
+	while (++i <= 100)
 	{
-		char *v = val;
-
-		*(char *)v = (i / 10) + '0'; ++v;
-		*(char *)v = (i % 10) + '0'; ++v;
+		*(char *)v++ = (i / 10) + '0';
+		*(char *)v++ = (i % 10) + '0';
 		
 		v -= 2 * (!(i % 3) | !(i % 5));
 		*(unsigned int *)v = 'zziF'; v += 4 * !(i % 3);
@@ -80,9 +84,9 @@ void version_4()
 
 		*v++ = '\n';
 		*v = 0;
-
-		printf("%s", val);
 	}
+
+	printf("%s", buffer);
 }
 
 
@@ -90,8 +94,8 @@ int main(int argc, const char *argv[])
 {
     printf("\n\nVersion 1\n---------\n\n"); version_1();
     printf("\n\nVersion 2\n---------\n\n"); version_2();
-    printf("\n\nVersion 3\n---------\n\n"); version_3();
+    printf("\n\nVersion 3\n---------\n\n"); version_3();    
     printf("\n\nVersion 4\n---------\n\n"); version_4();
-        
+   
     return 0;
 }
