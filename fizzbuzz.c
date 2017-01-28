@@ -36,8 +36,8 @@ void version_1()
 // version 2: with only one branching
 void version_2()
 {
-    char fizz[] = "Fizz\0---\0---\0";
-    char buzz[] = "Buzz\0---\0---\0---\0---\0";
+    char fizz[] = "Fizz\0zzz\0zzz\0";
+    char buzz[] = "Buzz\0zzz\0zzz\0zzz\0zzz\0";
     char r[] = "??zz--zz";
     
     for (unsigned int i = 1; i <= 100; ++i)
@@ -61,12 +61,37 @@ void version_3()
     }
 }
 
+// version 4: no branching ;)
+void version_4()
+{
+	char val[] = "xx\n\0";
+
+	unsigned int i = 0;
+	while (++i < 100)
+	{
+		char *v = val;
+
+		*(char *)v = (i / 10) + '0'; ++v;
+		*(char *)v = (i % 10) + '0'; ++v;
+		
+		v -= 2 * (!(i % 3) | !(i % 5));
+		*(unsigned int *)v = 'zziF'; v += 4 * !(i % 3);
+		*(unsigned int *)v = 'zzuB'; v += 4 * !(i % 5);
+
+		*v++ = '\n';
+		*v = 0;
+
+		printf("%s", val);
+	}
+}
+
 
 int main(int argc, const char *argv[])
 {
     printf("\n\nVersion 1\n---------\n\n"); version_1();
     printf("\n\nVersion 2\n---------\n\n"); version_2();
     printf("\n\nVersion 3\n---------\n\n"); version_3();
+    printf("\n\nVersion 4\n---------\n\n"); version_4();
         
     return 0;
 }
