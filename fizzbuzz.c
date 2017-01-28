@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 
-char buffer[419];
+char buffer[414];
 
 
 // version 1: using tests and a temporary flag
@@ -73,18 +73,19 @@ void version_4()
 	char *p = buffer;
 
 	unsigned int i = 0;
-	while (++i <= 100)
+	while (100 - i++)
 	{
-		*(char *)p++ = (i / 10) + '0';
-		*(char *)p++ = (i % 10) + '0';
+		unsigned int d = i / 10;
+		*p = '0' + d; p += !!d; *p++ = '0' + i % 10;
 		
-		p -= 2 * (!(i % 3) | !(i % 5));
+		p -= (1 + !!d) * (!(i % 3) | !(i % 5));
 		*(unsigned int *)p = 'zziF'; p += 4 * !(i % 3);
 		*(unsigned int *)p = 'zzuB'; p += 4 * !(i % 5);
 
 		*p++ = '\n';
-		*p = 0;
 	}
+
+	*p = 0;
 
 	printf("%s", buffer);
 }
@@ -96,6 +97,6 @@ int main(int argc, const char *argv[])
     printf("\n\nVersion 2\n---------\n\n"); version_2();
     printf("\n\nVersion 3\n---------\n\n"); version_3();    
     printf("\n\nVersion 4\n---------\n\n"); version_4();
-   
+
     return 0;
 }
