@@ -6,6 +6,14 @@
 #include <stdio.h>
 
 
+#if 'ABCD' == 0x41424344
+static const unsigned int kFizzFourCC = 'zziF';
+static const unsigned int kBuzzFourCC = 'zzuB';
+#else
+static const unsigned int kFizzFourCC = 'Fizz';
+static const unsigned int kBuzzFourCC = 'Buzz';
+#endif
+
 char buffer[414];
 
 
@@ -75,12 +83,19 @@ void version_4()
 	unsigned int i = 0;
 	while (100 - i++)
 	{
-		unsigned int d = i / 10;
-		*p = '0' + d; p += !!d; *p++ = '0' + i % 10;
+		unsigned int fizz = !(i % 3);
+		unsigned int buzz = !(i % 5);
+
+		unsigned int dec = i / 10;
+		p[0] = '0' + dec;
+		p[!!dec] = '0' + i % 10;
+		p += (!!dec + 1) * !(fizz | buzz);
+
+		*(unsigned int *)p = kFizzFourCC;
+		p += 4 * fizz;
 		
-		p -= (1 + !!d) * (!(i % 3) | !(i % 5));
-		*(unsigned int *)p = 'zziF'; p += 4 * !(i % 3);
-		*(unsigned int *)p = 'zzuB'; p += 4 * !(i % 5);
+		*(unsigned int *)p = kBuzzFourCC;
+		p += 4 * buzz;
 
 		*p++ = '\n';
 	}
@@ -89,7 +104,6 @@ void version_4()
 
 	printf("%s", buffer);
 }
-
 
 int main(int argc, const char *argv[])
 {
